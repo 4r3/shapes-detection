@@ -36,14 +36,14 @@ public class KNN {
         }
     }
 
-    public ArrayList<Flower> findNearest(Flower f,int k){
+    public ArrayList<Flower> findNearest(Flower f,int k,int order){
         Flower fNorm = normalize(f);
         ArrayList<Flower> nearest = new ArrayList<>();
         nearest.add(jardin.get(0));
         for (int i = 1; i < jardin.size(); i++) {
-            double dist = manathanDistance(fNorm,normalize(jardin.get(i)));
+            double dist = minkowskiDistance(fNorm,normalize(jardin.get(i)),order);
             int j = 0;
-            while (j < nearest.size() && manathanDistance(fNorm,normalize(nearest.get(j)))<dist){
+            while (j < nearest.size() && minkowskiDistance(fNorm,normalize(nearest.get(j)),order)<dist){
                 j++;
             }
 
@@ -62,20 +62,15 @@ public class KNN {
     }
 
     private double manathanDistance(Flower f1, Flower f2){
-        double dist = 0;
-        dist += Math.abs(f1.petalLength-f2.petalLength);
-        dist += Math.abs(f1.petalWidth-f2.petalWidth);
-        dist += Math.abs(f1.sepalLength-f2.sepalLength);
-        dist += Math.abs(f1.sepalWidth-f2.sepalWidth);
-        return dist;
+        return minkowskiDistance(f1,f2,1);
     }
 
     private double minkowskiDistance(Flower f1, Flower f2,int k){
         double dist = 0;
-        dist += Math.pow(f1.petalLength-f2.petalLength,k);
-        dist += Math.pow(f1.petalWidth-f2.petalWidth,k);
-        dist += Math.pow(f1.sepalLength-f2.sepalLength,k);
-        dist += Math.pow(f1.sepalWidth-f2.sepalWidth,k);
+        dist += Math.pow(Math.abs(f1.petalLength-f2.petalLength),k);
+        dist += Math.pow(Math.abs(f1.petalWidth-f2.petalWidth),k);
+        dist += Math.pow(Math.abs(f1.sepalLength-f2.sepalLength),k);
+        dist += Math.pow(Math.abs(f1.sepalWidth-f2.sepalWidth),k);
         return Math.pow(dist,1.0/k);
     }
 

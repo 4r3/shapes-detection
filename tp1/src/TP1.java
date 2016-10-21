@@ -5,23 +5,36 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class TP1 {
-    public static ArrayList<Flower> jardin = new ArrayList<>();
-    public static ArrayList<Flower> nearest;
+    public ArrayList<Flower> jardin = new ArrayList<>();
+    public ArrayList<Flower> nearest;
 
     public static void main(String[] args){
+        double res = 0;
+        for (int i = 0; i < 150; i++) {
+            TP1 t = new TP1();
+            res += t.testFor(i,5,1);
+        }
+        res = res/150;
+        System.out.println(res);
+    }
+
+    TP1(){
         nearest = new ArrayList<>();
         getJardin();
+    }
+
+    public double testFor(int flower,int k,int order){
         System.out.println(jardin.size());
-        int i = 1;
+        int i = flower;
         Flower myFlower = jardin.get(i);
         jardin.remove(i);
 
         KNN knn = new KNN(jardin);
-        ArrayList<Flower> res = knn.findNearest(myFlower,7);
-        System.out.println(knn.goodGuessRate(myFlower,res));
+        ArrayList<Flower> res = knn.findNearest(myFlower,k,order);
+        return knn.goodGuessRate(myFlower,res);
     }
 
-    public static void getJardin(){
+    public void getJardin(){
         String csvFile = "datas/iris.data";
         BufferedReader br = null;
         String line = "";
