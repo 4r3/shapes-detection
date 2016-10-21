@@ -10,23 +10,17 @@ public class Flower {
         this.sepalWidth = sepalWidth;
         this.petalLength = petalLength;
         this.petalWidth = petalWidth;
-        if(type.contains("virginica")){
+        if(type == null){
+            this.type = null;
+        } else if(type.contains("virginica")){
             this.type = FlowerType.IrisVirginica;
         }else if (type.contains("versicolor")){
             this.type = FlowerType.IrisVersicolour;
-        }else{
+        }else if (type.contains("setosa")){
             this.type = FlowerType.IrisSetosa;
+        }else{
+            this.type = null;
         }
-    }
-
-    public double distance(Flower f){
-        double dist = 0;
-        dist += Math.abs(f.petalLength-petalLength);
-        dist += Math.abs(f.petalWidth-petalWidth);
-        dist += Math.abs(f.sepalLength-sepalLength);
-        dist += Math.abs(f.sepalWidth-sepalWidth);
-
-        return dist;
     }
 
     @Override

@@ -12,10 +12,13 @@ public class TP1 {
         nearest = new ArrayList<>();
         getJardin();
         System.out.println(jardin.size());
-        int i = 70;
+        int i = 1;
         Flower myFlower = jardin.get(i);
         jardin.remove(i);
-        findNearest(myFlower,5);
+
+        KNN knn = new KNN(jardin);
+        ArrayList<Flower> res = knn.findNearest(myFlower,7);
+        System.out.println(knn.goodGuessRate(myFlower,res));
     }
 
     public static void getJardin(){
@@ -54,28 +57,6 @@ public class TP1 {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    public static void findNearest(Flower f,int k){
-        nearest.add(jardin.get(0));
-        for (int i = 1; i < jardin.size(); i++) {
-            double dist = f.distance(jardin.get(i));
-            int j = 0;
-            while (j < nearest.size() && f.distance(nearest.get(j))<dist){
-                j++;
-            }
-
-            if(j < k){
-                nearest.add(j,jardin.get(i));
-                if(nearest.size()>k){
-                    nearest.remove(k);
-                }
-            }
-        }
-        System.out.println(f);
-        for (int i = 0; i < k; i++) {
-            System.out.println(nearest.get(i));
         }
     }
 }
